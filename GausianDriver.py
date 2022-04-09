@@ -66,8 +66,9 @@ def exp1(file, fnum=0, nmeans=3, trials=50, method=kmeans):
   acc_tot=0
   ce = None
   std = None
-  for trial in range(50):
-    model = method(nmeans,0.1).fit(x)
+  for trial in range(trials):
+    model = method(nmeans,0.01).fit(x)
+    print(f"Chunk lens: {model.chunklens/5000}")
     predictions = None
     centers = None
     stds = None
@@ -77,7 +78,7 @@ def exp1(file, fnum=0, nmeans=3, trials=50, method=kmeans):
     for i in range(predictions.shape[0]):
       clusts[predictions[i], labels[i]]+=1
       tots[predictions[i]]+=1
-    if trial==1:
+    if trial==0:
       ce = centers
       std = stds
       print("Printing stats from first trial")
@@ -92,12 +93,15 @@ def exp1(file, fnum=0, nmeans=3, trials=50, method=kmeans):
     if trial==1:
       print(f"Accuracy: {acc}")
       print(f"Accuracy per cluster: {accuracies}")
-  acc_tot/=50
+  acc_tot/=trials
   print(f"Accuracy over 50 trials: {acc_tot}")
   
   return {"accuracy": acc, "means":ce, "stds":std }
 
 exp = "em"
+
+print(exp1(files[-1],fnum=18,nmeans=fileStats[18][0],trials=1,method=kmeans))
+exit()
 
 if exp=="mean":
   trialacc=[]

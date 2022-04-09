@@ -155,7 +155,7 @@ class em:
           if tb<bdist:
             bdist = tb
         b[i] = bdist
-        s[i] = b[i]-a[i] / max(a[i],b[i])
+        s[i] = (b[i]-a[i]) / max(a[i],b[i])
       sc[cluster] = np.mean(s)
     sil_score = 0
     for i in range(sc.shape[0]):
